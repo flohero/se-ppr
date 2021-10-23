@@ -1,0 +1,199 @@
+= Übung 01
+:author: Florian Weingartshofer
+:email: <S1910307103@students.fh-hagenberg.at>
+:reproducible:
+:experimental:
+:listing-caption: Listing
+:source-highlighter: rouge
+:rouge-style: github
+:toc:
+:sectnums:
+:sectnumlevels: 6
+:toclevels: 6
+// Variables
+:src: ../src/euro-bet-server/src/main/java/swe4
+:fxml: ../src/euro-bet-server/src/main/resources/swe4/client
+:img: ./img
+:imagesoutdir: ./out
+
+<<<
+== Lösungsidee
+
+Die Funktionen werden nach Angabe implementiert.
+Die Parameter der Funktionen werden auf die Sinnhaftigkeit der Werte überprüft und ein Fehler wird ausgelöst, sollten die Werte nicht passen.
+
+
+== Source Code
+
+[source,python]
+----
+include::./monte_carlo_walk.py[lines=1.. 77]
+----
+
+<<<
+== Test Cases
+
+=== Test Case 1
+
+Der `generate_walk` Funktion wird ein ungültiger Wert übergeben und dadurch sollte eine Exception ausgelöst werden.
+
+[source,python]
+----
+try:
+    print("Expecting Exception")
+    generate_walk(blocks=-1).__next__()
+except ValueError as e:
+    print("Exception: ", e)
+----
+
+.Output
+[source]
+----
+Test Case 1
+Expecting Exception
+Exception:  blocks has to be bigger than zero
+----
+
+=== Test Case 2
+
+Dieselbe Funktion wird mit dem gültigen Wert `10` aufgerufen und eine erfolgreiche Durchführung wird erwartet.
+
+[source,python]
+----
+print("Expecting a random list consisting of N, E, S, W: ", list(generate_walk(10)))
+----
+
+.Output
+[source]
+----
+Expecting a random list consisting of N, E, S, W:  ['S', 'E', 'W', 'S', 'E', 'N', 'S', 'E', 'E', 'W']
+----
+
+<<<
+=== Test Case 3
+
+Es wird `decode_walk` mit einem Beispiel walk aufgerufen, welcher wieder am Startpunkt endet.
+Es wird ein Vector `(0, 0)` erwartet.
+
+[source,python]
+----
+example_walk = ["N", "N", "N", "W", "W", "W", "S", "S", "S", "E", "E", "E"]
+print("Expecting (0, 0), got ", decode_walk(example_walk))
+----
+
+.Output
+[source]
+----
+Expecting (0, 0), got  (0, 0)
+----
+
+=== Test Case 4
+
+Es wird `decode_walk` mit einer leeren Liste aufgerufen und eine Exception erwartet.
+
+[source,python]
+----
+try:
+    print("Expecting Exception")
+    decode_walk([])
+except ValueError as e:
+    print("Exception: ", e)
+----
+
+.Output
+[source]
+Expecting Exception
+Exception:  walk can not be empty
+
+<<<
+=== Test Case 5
+
+Es wird `decode_walk` mit einem ungültigen Symbol aufgerufen und eine Exception erwartet.
+
+[source,python]
+    try:
+        print("Expecting Exception")
+        decode_walk(["P"])
+    except ValueError as e:
+        print("Exception: ", e)
+
+.Output
+[source]
+Expecting Exception
+Exception:  Invalid direction
+
+=== Test Case 6
+
+Es wird die `distance_manhattan` mit einem gültigen Start und End Tupel aufgerufen und `21` erwartet.
+
+[source,python]
+end_tuple = (7, 7)
+print("Expecting 21, got ", distance_manhattan((3, 4), end_tuple))
+
+.Output
+[source]
+Expecting 21, got  21
+
+<<<
+=== Test Case 7
+
+Es wird `do_walk` mit `blocks=10` und einer Distanz-Funktion, welche immer null zurückliefert, aufgerufen.
+Es wird ein zufälliger walk mit der Distanz `0` erwartet.
+
+[source,python]
+print("Expecting a random walk and distance of zero, got ", do_walk(10, dist=lambda x, y: 0))
+
+.Output
+[source]
+Expecting a random walk and distance of zero, got  (['W', 'W', 'W', 'S', 'S', 'S', 'N', 'S', 'E', 'E'], 0)
+
+=== Test Case 8
+
+Es wird die `monte_carlo_walk_analysis` Funktion mit einem ungültigen Input für `max_blocks` aufgerufen.
+
+[source,python]
+try:
+    print("Expecting Exception")
+    monte_carlo_walk_analysis(0, 10)
+except ValueError as e:
+    print("Exception: ", e)
+
+.Output
+[source]
+Expecting Exception
+Exception:  max_blocks can not be lower one
+
+<<<
+=== Test Case 9
+
+Es wird die `monte_carlo_walk_analysis` Funktion mit einem ungültigen Input für `repetitions` aufgerufen.
+
+[source,python]
+try:
+    print("Expecting Exception")
+    monte_carlo_walk_analysis(10, -10)
+except ValueError as e:
+    print("Exception: ", e)
+
+.Output
+[source]
+Expecting Exception
+Exception:  repetitions can not be lower one
+
+=== Test Case 10
+
+Es wird die `monte_carlo_walk_analysis` Funktion mit gültigen Parametern aufgerufen.
+
+[source,python]
+print("Expecting a result, got ", monte_carlo_walk_analysis(10, 10))
+
+.Output
+[source]
+----
+Expecting a result, got  {1: [(['W'], 1), (['N'], 1), (['E'], 1), (['E'], 1), (['W'], 1), (['S'], 1), (['N'], 1), (['N'], 1), (['E'], 1), (['W'], 1)], 2: [(['S', 'E'], 2), (['N', 'S'], 0), (['E', 'E'], 2), (['E', 'N'], 2), (['W', 'W'], 2), (['S', 'S'], 2), (['S', 'W'], 2), (['N', 'W'], 2), (['S', 'S'], 2), (['W', 'E'], 0)], 3: [(['S', 'W', 'W'], 3), (['E', 'W', 'E'], 1), (['S', 'N', 'N'], 1), (['E', 'N', 'E'], 3), (['W', 'E', 'S'], 1), (['E', 'S', 'S'], 3), (['W', 'E', 'W'], 1), (['E', 'W', 'W'], 1), (['E', 'W', 'N'], 1), (['E', 'W', 'E'], 1)], 4: [(['W', 'N', 'W', 'S', 'N', 'E', 'N', 'N'], 4), (['E', 'W', 'S', 'E', 'E', 'S', 'S', 'W'], 4), (['W', 'S', 'E', 'E', 'W', 'S', 'N', 'E'], 2), (['N', 'S', 'W', 'E', 'E', 'E', 'S', 'E'], 4), (['S', 'N', 'N', 'W', 'N', 'S', 'E', 'S'], 0), (['E', 'E', 'E', 'W', 'W', 'W', 'E', 'N'], 2), (['E', 'E', 'S', 'E', 'S', 'N', 'W', 'N'], 2), (['S', 'N', 'W', 'E', 'W', 'E', 'N', 'S'], 0), (['W', 'E', 'W', 'E', 'S', 'S', 'S', 'S'], 4), (['E', 'S', 'E', 'N', 'N', 'S', 'W', 'E'], 2)], 5: [(['S', 'N', 'N', 'W', 'N', 'N', 'E'], 3), (['W', 'E', 'W', 'N', 'W', 'E', 'E'], 1), (['S', 'N', 'W', 'E', 'E', 'N', 'E'], 3), (['N', 'N', 'N', 'W', 'N', 'E', 'E'], 5), (['N', 'N', 'N', 'W', 'E', 'W', 'E'], 3), (['N', 'W', 'N', 'S', 'N', 'W', 'S'], 3), (['N', 'N', 'S', 'N', 'S', 'E', 'W'], 1), (['E', 'E', 'S', 'W', 'N', 'S', 'S'], 3), (['E', 'E', 'E', 'S', 'N', 'W', 'E'], 3), (['N', 'S', 'S', 'W', 'E', 'S', 'W'], 3)], 6: [(['S', 'S', 'W', 'S', 'W', 'E', 'N', 'W', 'N', 'W'], 4), (['W', 'E', 'N', 'E', 'E', 'N', 'W', 'W', 'W', 'W'], 4), (['E', 'N', 'N', 'S', 'N', 'S', 'E', 'W', 'N', 'N'], 4), (['E', 'S', 'N', 'N', 'S', 'E', 'S', 'E', 'E', 'E'], 6), (['W', 'S', 'N', 'N', 'E', 'W', 'N', 'N', 'S', 'E'], 2), (['S', 'S', 'N', 'E', 'S', 'N', 'S', 'W', 'W', 'W'], 4), (['N', 'E', 'W', 'W', 'S', 'W', 'W', 'E', 'W', 'W'], 4), (['N', 'S', 'S', 'S', 'W', 'N', 'S', 'W', 'S', 'W'], 6), (['N', 'S', 'W', 'E', 'W', 'E', 'W', 'E', 'E', 'N'], 2), (['E', 'N', 'S', 'S', 'N', 'N', 'E', 'S', 'N', 'S'], 2)], 9: [(['W', 'S', 'E', 'W', 'N', 'N', 'S', 'E', 'S'], 1), (['S', 'W', 'W', 'W', 'N', 'S', 'S', 'S', 'S'], 7), (['S', 'N', 'S', 'W', 'E', 'W', 'S', 'S', 'S'], 5), (['E', 'E', 'N', 'N', 'E', 'E', 'E', 'E', 'N'], 9), (['N', 'N', 'W', 'S', 'E', 'E', 'S', 'E', 'E'], 3), (['S', 'E', 'N', 'N', 'E', 'N', 'E', 'S', 'N'], 5), (['N', 'S', 'E', 'W', 'E', 'W', 'E', 'S', 'S'], 3), (['S', 'E', 'W', 'W', 'S', 'N', 'S', 'W', 'E'], 3), (['N', 'W', 'W', 'E', 'W', 'W', 'E', 'S', 'N'], 3), (['N', 'E', 'E', 'E', 'E', 'E', 'E', 'W', 'N'], 7)]}
+----
+
+<<<
+=== Screenshot des Outputs
+
+image::img/image-2021-10-23-19-03-22-844.png[]
