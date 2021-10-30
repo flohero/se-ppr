@@ -11,8 +11,6 @@
 :sectnumlevels: 6
 :toclevels: 6
 // Variables
-:src: ../src/euro-bet-server/src/main/java/swe4
-:fxml: ../src/euro-bet-server/src/main/resources/swe4/client
 :img: ./img
 :imagesoutdir: ./out
 
@@ -27,7 +25,7 @@ Die Parameter der Funktionen werden auf die Sinnhaftigkeit der Werte überprüft
 
 [source,python]
 ----
-include::./01_Basic_Library..py[lines=1.. 77]
+include::./e01.py[lines=1.. 77]
 ----
 
 <<<
