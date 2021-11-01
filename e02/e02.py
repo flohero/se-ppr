@@ -120,5 +120,6 @@ if __name__ == "__main__":
     blocks = 10
     walk_count = 10
     generated_walks = [list(generate_walk(blocks)) for _ in range(walk_count)]
-    draw_multiple_walks(generated_walks)
+    draw_walk(generated_walks[0], turtle.Turtle())
+    #draw_multiple_walks(generated_walks)
     turtle.mainloop()
