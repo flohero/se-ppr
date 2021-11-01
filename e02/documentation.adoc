@@ -1,0 +1,37 @@
+= 02 - Walk Visualization
+:author: Florian Weingartshofer
+:email: <S1910307103@students.fh-hagenberg.at>
+:reproducible:
+:experimental:
+:listing-caption: Listing
+:source-highlighter: rouge
+:rouge-style: github
+:toc:
+:sectnums:
+:sectnumlevels: 6
+:toclevels: 6
+// Variables
+:img: ./img
+:imagesoutdir: ./out
+
+== Lösungsidee
+
+Die Visualisierung wird laut Angabe implementiert, zusätzlich, wird auch noch eine Legende erstellt.
+Es wird die Übung 01 als Python Modul eingebunden, um die Applikation testen zu können und Code Duplizierung zu vermeiden.
+
+== Code
+[source,python]
+----
+include::./e02.py[]
+----
+
+== Test Cases
+=== Vollständiger Durchlauf
+Ein vollständiger Durchlauf mit 10 Walks zu 10 Blöcken.
+
+image::img/image-2021-11-01-18-19-45-106.png[]
+
+=== Einfacher Durchlauf
+Visualisierung von einem Walk.
+
+image::img/image-2021-11-01-18-25-38-231.png[]
