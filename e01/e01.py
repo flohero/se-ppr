@@ -73,7 +73,7 @@ def monte_carlo_walk_analysis(max_blocks: int, repetitions: int = 10_000) -> dic
     if repetitions < 1:
         raise ValueError("repetitions can not be lower one")
     walks = dict()
-    for i in range(1, max_blocks):
+    for i in range(1, max_blocks + 1):
         walk_for_blocks = [do_walk(i) for _ in range(repetitions)]
         walks[i] = walk_for_blocks
     return walks
