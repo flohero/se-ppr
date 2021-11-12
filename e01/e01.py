@@ -12,7 +12,7 @@ def generate_walk(blocks: int = 1) -> Generator[str, None, None]:
     :raise ValueError: if blocks is lower one
     """
     if blocks < 1:
-        raise ValueError("blocks has to be bigger than zero")
+        raise ValueError("blocks has to be greater than zero")
     for _ in range(blocks):
         yield random.choice(options)
 
@@ -45,7 +45,7 @@ def distance_manhattan(start: tuple[int, int], end: tuple[int, int]):
     :param end: end position
     :return: the calculated manhattan distance
     """
-    return sum(abs(i1 + i2) for i1, i2 in zip(start, end))
+    return sum(abs(i1 - i2) for i1, i2 in zip(start, end))
 
 
 def do_walk(blocks, dist: Callable[[tuple[int, int], tuple[int, int]], int] = distance_manhattan) \
