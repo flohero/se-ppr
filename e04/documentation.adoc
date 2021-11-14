@@ -1,0 +1,134 @@
+= Exercise 04
+:author: Florian Weingartshofer
+:email: <S1910307103@students.fh-hagenberg.at>
+:reproducible:
+:experimental:
+:listing-caption: Listing
+:source-highlighter: rouge
+:rouge-style: github
+:toc:
+:sectnums:
+:sectnumlevels: 6
+:toclevels: 6
+// Variables
+:img: ./img
+:imagesoutdir: ./out
+
+<<<
+
+== Garbage Collector
+In Python werden Objekte im Memory gespeichert, wobei jedes Objekt einen Typ, Value und Reference Count hat.
+Die Reference Count gibt an wie oft das Objekt von Namen referenziert wird.
+Wenn mehr Name auf das Objekt zeigen wird die Reference Count erhöht, werden es weniger wird sie dekrementiert.
+[source,python]
+----
+a = 50      # Reference Count bei 1
+b = a       # Reference Count bei 2
+a = None    # Reference Count bei 1
+----
+Wenn die Reference Count null erreicht, wird das Objekt vom Garbage Collector gelöscht.
+Reference Counting ist einfach zu implementieren und auch zu verstehen,
+ein Problem stellen allerdings zyklische References dar.
+Dabei referenziert sich ein Objekt selber und die Reference Count wird niemals null.
+[source,python]
+----
+a = []
+a.append(a)
+----
+Auch wenn das Objekt von keinem anderen Namen genutzt wird, kann es der GC nicht löschen und es bleibt im Memory.
+Die Lösung hierfür ist die Generational Garbage Collection.
+
+Generational Garbage Collection kann zyklische Referenzen aufbrechen und ungenutzte Objekte löschen.
+Es funktioniert so, dass jedes Objekt in eine von drei Listen gespeichert wird; Generation 0, 1 und 2 list.
+Neu erstellte Objekte werden in der Generation 0 List gespeichert.
+Zyklische Referenzen werden erkannt, falls ein Objekt nicht von außerhalb referenziert wird, wird es entfernt.
+Die Objekte, welche nicht entfernt wurden, werden in die Generation 1 List eingefügt.
+Die obigen Schritte werden wiederholt und die restlichen Objekte werden in die Generation 2 List eingefügt.
+Diese bleiben bis zum Ende des Programs erhalten.
+Dieser Prozess wird von einer Threshold getriggert.
+Wenn die Anzahl der Objekte in einer Generation List die dafür konfigurierte Threshold überschreitet,
+wird der Collection Prozess angestoßen.
+Die Thresholds können über das `gc` Modul konfiguriert werden.
+
+<<<
+=== sys und garbage collector Modul
+Mit dem sys Modul kann die Reference Count eines Objektes zurückgegeben werden.
+Standardmäßig wird `getrefcount` nichts Kleineres als drei zurückgeben,
+da eine Referenz beim Erstellen des Objekts kreiert wird,
+weitere Referenzen werden beim von der Funktion selber erstellt.
+
+[source,python]
+----
+import sys
+sys.getrefcount(30012000) # Output 3
+a = 30012000
+sys.getrefcount(a) # Output 4
+del a
+sys.getrefcount(30012000) # Output 3
+----
+
+Bei kleineren Integers kann es auch passieren, dass die Reference Count wesentlich höher ist,
+da diese in Python selbst genutzt werden.
+
+Über das `gc` Modul kann das Verhalten des Garbage Collectors verändert werden, bzw kann dieser komplett disabled werden.
+[source,python]
+----
+import gc
+gc.set_threshold(1000, 100, 10) # Objekt Threshold für jede der drei Generation List
+gc.set_threshold(0, 0, 0) # Um den Garbage Collector zu disablen
+collected_count = gc.collect() # Garbage Collection wird angestoßen
+collected_count = gc.collect(0) # Garbage Collection für Generation 0 List wird angestoßen
+collected_count = gc.collect(1) # Garbage Collection für Generation 0 List wird angestoßen
+collected_count = gc.collect(2) # Garbage Collection für Generation 0 List wird angestoßen
+----
+
+<<<
+== Profiling der simple Library
+Die Library wurde noch Angabe modifiziert.
+
+* Peak von `monte_carlo_walk_analysis`: 46828593
+* Peak von `monte_carlo_walk`: 1828837
+
+Man kann sehen, dass die modifizierte Variante einen wesentlich kleineren Memory Peak aufweist.
+
+.Vollständiger Output
+[source]
+----
+Traced Memory Peak of monte_carlo_walk_analysis: 46828593
+Traced Memory Peak of monte_carlo_walk: 1828837
+Allocations per Line
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:66: size=108 KiB (-2152 B), count=1974 (-24), average=56 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:104: size=2032 B (+2032 B), count=22 (+22), average=92 B
+/usr/lib/python3.9/tracemalloc.py:558: size=1224 B (+1168 B), count=22 (+21), average=56 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:63: size=3304 B (-1120 B), count=59 (-20), average=56 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:68: size=920 B (+920 B), count=2 (+2), average=460 B
+/usr/lib/python3.9/tracemalloc.py:423: size=576 B (+576 B), count=4 (+4), average=144 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:85: size=456 B (-512 B), count=1 (-2), average=456 B
+/usr/lib/python3.9/tracemalloc.py:560: size=472 B (+472 B), count=2 (+2), average=236 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:118: size=456 B (+456 B), count=1 (+1), average=456 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:121: size=424 B (+424 B), count=1 (+1), average=424 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:115: size=0 B (-424 B), count=0 (-1)
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:49: size=823 B (+168 B), count=9 (+3), average=91 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:29: size=400 B (+168 B), count=3 (+1), average=133 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:113: size=1112 B (-112 B), count=1 (-3), average=1112 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:119: size=112 B (+112 B), count=3 (+3), average=37 B
+/usr/lib/python3.9/tracemalloc.py:315: size=104 B (+104 B), count=2 (+2), average=52 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:102: size=64 B (+64 B), count=1 (+1), average=64 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:83: size=0 B (-64 B), count=0 (-1)
+/usr/lib/python3.9/tracemalloc.py:313: size=48 B (+48 B), count=1 (+1), average=48 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:18: size=591 B (+0 B), count=3 (+0), average=197 B
+/usr/lib/python3.9/random.py:347: size=440 B (+0 B), count=1 (+0), average=440 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:61: size=432 B (+0 B), count=1 (+0), average=432 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:52: size=162 B (+0 B), count=2 (+0), average=81 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:21: size=112 B (+0 B), count=2 (+0), average=56 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:41: size=76 B (+0 B), count=2 (+0), average=38 B
+/home/florian/projects/fh/semester5/ppr/exercise/lab/e04/e04.py:114: size=68 B (+0 B), count=2 (+0), average=34 B
+/usr/lib/python3.9/random.py:344: size=41 B (+0 B), count=2 (+0), average=20 B
+----
+
+<<<
+=== Code
+[source,python]
+----
+include::e04.py[]
+---
