@@ -28,6 +28,10 @@ daraus wird die Wahrscheinlichkeit errechnet, ob ein Walk mit einer bestimmten m
 === How do you determine that your results are stable with respect to the number of repetitions that are performed for each maximum length?
 Jede maximal Distanz wird sehr oft ausgeführt, bedeutet, dass zum Beispiel für die max. Distanz 20 die Walk-Generierung 10.000-mal ausgeführt wird.
 Dadurch kann gewährleistet werden, dass die Ergebnisse stabil sind und nicht schwanken.
+Zusätzlich wird das ganze nochmal 10-mal ausgeführt. Die Standardabweichung ist bei denm jeweiligen `n` relativ gering.
+
+.Standard Deviation of 10 Runs
+image::img/deviation.png[]
 
 === What happens if you change the condition for a walk being short from having a distance of smaller or equal six to other numbers?
 Alle Walks, deren maximal Distanz kleiner gleich `n` sind, sind natürlich zu kurz.
