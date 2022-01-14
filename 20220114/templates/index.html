@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Todo App</title>
+
+{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center">Task Master</h1>
+    <table>
+        <thead>
+        <tr>
+            <td>Task</td>
+            <td>Added</td>
+            <td>Actions</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for todo in todo_list %}
+            <tr>
+                <td>{{ todo.content }}</td>
+                <td>{{ todo.date_created.date() }}</td>
+                <td>
+                    <a href="">Update</a>
+                    <br/>
+                    <a href="/delete/{{ todo.idx }}">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <form action="/" method="post">
+        <div>
+            <label>Todo Title</label>
+            <input type="text" name="content" placeholder="Enter Todo...">
+            <button type="submit">Add</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+
