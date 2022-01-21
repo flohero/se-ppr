@@ -21,7 +21,7 @@
                 <td>{{ todo.content }}</td>
                 <td>{{ todo.date_created.date() }}</td>
                 <td>
-                    <a href="">Update</a>
+                    <a href="/update/{{ todo.idx }}">Update</a>
                     <br/>
                     <a href="/delete/{{ todo.idx }}">Remove</a>
                 </td>

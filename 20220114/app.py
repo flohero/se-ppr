@@ -54,6 +54,26 @@ def delete(todo_id):
         return 'Cannot delete task'
 
 
+@app.route('/update/<int:todo_id>', methods=['GET'])
+def update_view(todo_id):
+    todo = Todo.query.get_or_404(todo_id)
+    return render_template('update.html', todo=todo)
+
+
+@app.route('/update/<int:todo_id>', methods=['POST'])
+def update(todo_id):
+    todo = Todo.query.get_or_404(todo_id)
+    title = request.form.get('content')
+
+    todo.content = title
+    try:
+        db.session.commit()
+        return redirect(url_for('index'))
+    except Exception as e:
+        print(e)
+        return 'There was an issue in your updated task'
+
+
 if __name__ == '__main__':
     db.create_all()
     app.run()

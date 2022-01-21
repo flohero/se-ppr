@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Todo App</title>
+
+{% endblock %}
+
+{% block body %}
+    <h1 style="text-align: center">Update Task</h1>
+    <form action="/update/{{ todo.idx }}" method="post">
+        <div>
+            <label for="content">Todo Title</label>
+            <input id="content" type="text" name="content" placeholder="Enter Todo..." value="{{ todo.content }}">
+            <button type="submit">Update ToDo</button>
+        </div>
+    </form>
+
+{% endblock %}
+
+
