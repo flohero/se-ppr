@@ -1,0 +1,29 @@
+= Exercise 06
+Florian Weingartshofer <S1910307103@fhooe.at>
+1.0, Jannuary 30, 2022: Exercise 06
+:reproducible:
+:experimental:
+:listing-caption: Listing
+:source-highlighter: rouge
+:rouge-style: github
+:toc:
+:sectnums:
+:sectnumlevels: 6
+:toclevels: 6
+// Variables
+:img: ./img
+:imagesoutdir: ./out
+
+
+== Dependencies
+
+[source,text]
+----
+include::../requirements.txt[]
+----
+
+== Annahmen
+* JSON-Files sind nicht zu stark genested und von pandas lesbar
+* Optimaler weise können die JSON-Files einfach in Tabellen-Format dargestellt werden, das bedeutet, dass das Root-Element ein Array ist und die Objekte darin alle dasselbe Schema haben
+* Die anzulegende Ordnerstruktur existiert davor noch nicht und das Script hat Lese- und Schreibrechte
+
