@@ -26,4 +26,6 @@ include::../requirements.txt[]
 * JSON-Files sind nicht zu stark genested und von pandas lesbar
 * Optimaler weise können die JSON-Files einfach in Tabellen-Format dargestellt werden, das bedeutet, dass das Root-Element ein Array ist und die Objekte darin alle dasselbe Schema haben
 * Die anzulegende Ordnerstruktur existiert davor noch nicht und das Script hat Lese- und Schreibrechte
+* .csv und .txt sind dasselbe Format
+* .sqlite und .db sind dasselbe Format
 
