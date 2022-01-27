@@ -1,4 +1,4 @@
-,type,value,start,end,name,createdAt,instanceId,id
+index,type,value,start,end,name,createdAt,instanceId,id
 0,Counter,16044,,,agent.ping.count,2022-01-23T21:03:38,pop-os,32939
 1,Measurement,12,,,agent.ping.roundtriptime,2022-01-23T21:03:36,pop-os,32941
 2,Counter,16043,,,agent.ping.count,2022-01-23T21:03:36,pop-os,32938
