@@ -60,6 +60,7 @@ class Ui_MainWindow(object):
         clicked = self.listWidget.currentRow()
         conn = sqlite3.connect('todo.db')
         c = conn.cursor()
+
         c.execute('DELETE FROM todo_list WHERE id = ?', [clicked])
         conn.commit()
         conn.close()
