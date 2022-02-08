@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block head %}
+    <title>Pokemänner und Pokefrauen</title>
+{% endblock %}
+{% block body %}
+    <h1>Pokefrauen und Pokemänner</h1>
+    <table>
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Type 1</td>
+            <td>Type 2</td>
+            <td>Actions</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in pokemon %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.type1 }}</td>
+                <td>{{ p.type2 }}</td>
+                <td>
+                    <a href="/update/{{ p.idx }}">Update</a>
+                    <a href="/delete/{{ p.idx }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form method="post" action="/create">
+        <label for="name">Name:
+            <input type="text" name="name" required>
+        </label>
+        <label for="type1">Type 1:
+            <input type="text" name="type1" required>
+        </label>
+        <label for="type2">Type 2:
+            <input type="text" name="type2">
+        </label>
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
