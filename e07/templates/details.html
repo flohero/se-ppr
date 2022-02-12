@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>YAC - Yet Another Converter</title>
+{% endblock %}
+
+{% block body %}
+    <div class="table-responsive h-100">
+        <h1>{{ pf.file.name }}</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                {% for col in pf.df.head() %}
+                    <th scope="col">
+                        <form action="/delete/{{ pf.file.name }}/column/{{ col }}" method="post" class="form-inline">
+                            {{ col }}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in pf.df.values %}
+                {% set row_loop = loop %}
+                <tr>
+                    {% for value in row %}
+                        <td>{{ value }}
+                        </td>
+                    {% endfor %}
+                    <td>
+                        <form action="/delete/{{ pf.file.name }}/row/{{ loop.index - 1 }}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

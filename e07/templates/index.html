@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <form enctype="multipart/form-data" action="/datasets" method="post">
+    <form enctype="multipart/form-data" action="/" method="post">
         <div class="mb-3 form-group">
             <label for="formFile" class="form-label">Upload a Dataset</label>
             <input class="form-control" type="file" id="file" name="file"
@@ -35,6 +35,12 @@
                             </select>
                             <button class="btn btn-sm btn-primary">Download As</button>
                         </form>
+                    </td>
+                    <td>
+                        <form action="/delete/{{ file }}" method="post">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        <a class="btn btn-sm btn-primary" href="/details/{{ file }}">Details</a>
                     </td>
                 </tr>
             {% endfor %}
