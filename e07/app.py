@@ -100,6 +100,9 @@ def delete_column(filename, column):
     target = path_of_uploaded_file(filename)
     if not converter.file_exists(target):
         return utils.file_does_not_exist_error()
+    pf = converter.parse_file(pathlib.Path(target))
+    if column not in pf.df.columns:
+        return utils.create_error_page("Column does not exist")
     drop_row_or_column(target, column, is_row=False)
     return redirect(f"/details/{filename}")
 
@@ -110,6 +113,35 @@ def delete_row(filename, row):
     if not converter.file_exists(target):
         return utils.file_does_not_exist_error()
     drop_row_or_column(target, row, is_row=True)
+    return redirect(f"/details/{filename}")
+
+
+@app.route("/edit-cell/<filename>/<int:row>/<int:column>", methods=["GET"])
+def edit_cell(filename, row, column):
+    target = path_of_uploaded_file(filename)
+    if not converter.file_exists(target):
+        return utils.file_does_not_exist_error()
+
+    pf = converter.parse_file(pathlib.Path(target))
+    return render_template(
+        "edit_cell.html",
+        filename=filename,
+        row=row,
+        col=column,
+        value=pf.df.iloc[row, column],
+    )
+
+
+@app.route("/edit/<filename>/<int:row>/<int:col>", methods=["POST"])
+def update_cell(filename, row, col):
+    target = path_of_uploaded_file(filename)
+    if not converter.file_exists(target):
+        return utils.file_does_not_exist_error()
+
+    pf = converter.parse_file(pathlib.Path(target))
+    pf.df.iloc[row, col] = request.form["value"]
+    pf.out_path = app.config["UPLOAD_FOLDER"]
+    pf.convert_file(pf.file.suffix)
     return redirect(f"/details/{filename}")
 
 

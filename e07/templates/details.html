@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="table-responsive h-100">
-        <h1>{{ pf.file.name }}</h1>
+        <h1>{{ pf.file.name }} <a class="btn btn-outline-light" href="/edit/{{ pf.file.name }}">Edit</a></h1>
         <table class="table">
             <thead>
             <tr>
@@ -27,11 +27,12 @@
                 {% set row_loop = loop %}
                 <tr>
                     {% for value in row %}
-                        <td>{{ value }}
+                        <td>
+                            <a href="/edit-cell/{{ pf.file.name }}/{{ row_loop.index - 1}}/{{ loop.index - 1 }}">{{ value }}</a>
                         </td>
                     {% endfor %}
                     <td>
-                        <form action="/delete/{{ pf.file.name }}/row/{{ loop.index - 1 }}" method="post">
+                        <form action="/delete/{{ pf.file.name }}/row/{{ row_loop.index - 1 }}" method="post">
                             <button type="submit" class="btn btn-sm btn-outline-danger">
                                 <i class="bi bi-trash"></i>
                             </button>
