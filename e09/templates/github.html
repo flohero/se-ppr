@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>YAC - Yet Another Converter</title>
+{% endblock %}
+
+{% block body %}
+    <h1>YAC - Yet Another Converter</h1>
+    <h2>Scrape Github</h2>
+    <form enctype="multipart/form-data" action="/github" method="post">
+        <div class="mb-3">
+            <label for="github-url" class="form-label">Github Organisation</label>
+            <input name="github-url" type="url" class="form-control" id="github-url" aria-describedby="url-help" required>
+            <div id="url-help" class="form-text">URL to the GitHub Organisation</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+{% endblock %}

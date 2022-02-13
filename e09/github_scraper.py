@@ -13,11 +13,14 @@ def scrape_github_org(url: str):
 
     org = BeautifulSoup(requests.get(url).text, "html.parser")
     _throw_if_not_org(org)
+    repos = _get_repositories(url)
     data = {
         "title": _get_title(org),
+        "url": url,
         "languages": _get_org_languages(org),
         "member_count": len(_get_members(url)),
-        "repositories": _get_repositories(url)
+        "repositories": repos,
+        "repository_count": len(repos)
     }
     return data
 
@@ -119,7 +122,10 @@ def _get_repository(url):
 
 
 def _pagination_next_url(pagination_container: BeautifulSoup):
-    pagination = pagination_container.find("div", {"class": "pagination"}).find("a", {"class": "next_page"})
+    pagination_container = pagination_container.find("div", {"class": "pagination"})
+    if pagination_container is None:
+        return None
+    pagination = pagination_container.find("a", {"class": "next_page"})
     return (base_url + pagination["href"]) if pagination is not None else None
 
 

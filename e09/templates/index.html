@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>YAC - Yet Another Converter</title>
+{% endblock %}
+
+{% block body %}
+    <h1>YAC - Yet Another Converter</h1>
+    <form enctype="multipart/form-data" action="/" method="post">
+        <div class="mb-3 form-group">
+            <label for="formFile" class="form-label">Upload a Dataset</label>
+            <input class="form-control" type="file" id="file" name="file"
+                   accept=".txt,.csv,.db,.sqlite,.json" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <div class="table-responsive h-100 mt-4">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Download</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file in files %}
+                <tr>
+                    <td>{{ file }}</td>
+                    <td>
+                        <form action="/export/{{ file }}" method="post">
+                            <select name="filetype">
+                                <option value=".csv">CSV</option>
+                                <option value=".sqlite">Sqlite</option>
+                                <option value=".json">JSON</option>
+                            </select>
+                            <button class="btn btn-sm btn-primary">Download As</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete/{{ file }}" method="post" class="d-inline">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        <a class="btn btn-sm btn-primary" href="/details/{{ file }}">Details</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

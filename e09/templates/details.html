@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>YAC - Yet Another Converter</title>
+{% endblock %}
+
+{% block body %}
+    <div class="table-responsive h-100">
+        <h1>{{ pf.file.name }} <a class="btn btn-outline-light" href="/edit/{{ pf.file.name }}">Edit</a></h1>
+        <div class="mt-2">
+            <h2>Metadata</h2>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item">URL: {{ metadata[1] }}</li>
+                <li class="list-group-item">Languages: {{ metadata[2] }}</li>
+                <li class="list-group-item">Member Count: {{ metadata[4] }}</li>
+                <li class="list-group-item">Repository Count: {{ metadata[3] }}</li>
+            </ul>
+        </div>
+        <table class="table mt-4">
+            <thead>
+            <tr>
+                {% for col in pf.df.head() %}
+                    <th scope="col">
+                        <form action="/delete/{{ pf.file.name }}/column/{{ col }}" method="post" class="form-inline">
+                            {{ col }}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in pf.df.values %}
+                {% set row_loop = loop %}
+                <tr>
+                    {% for value in row %}
+                        <td>
+                            <a href="/edit-cell/{{ pf.file.name }}/{{ row_loop.index - 1 }}/{{ loop.index - 1 }}">{{ value }}</a>
+                        </td>
+                    {% endfor %}
+                    <td>
+                        <form action="/delete/{{ pf.file.name }}/row/{{ row_loop.index - 1 }}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

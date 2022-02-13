@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>YAC - Yet Another Converter</title>
+{% endblock %}
+
+{% block body %}
+    <div class="table-responsive">
+        <h1>{{ filename }}</h1>
+        <form action="/edit/{{ filename}}/{{ row }}/{{ col }}"
+              method="post" class="form-inline">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Value" name="value"
+                       aria-label="Value" aria-describedby="basic-addon2" value="{{ value }}" required>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
