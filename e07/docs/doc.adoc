@@ -1,0 +1,103 @@
+= Exercise 07
+:author: Florian Weingartshofer <S1910307103@fhooe.at>
+:reproducible:
+:experimental:
+:listing-caption: Listing
+:source-highlighter: rouge
+:rouge-style: github
+:toc:
+:sectnums:
+:sectnumlevels: 6
+:toclevels: 6
+// Variables
+:img: ./img
+:imagesoutdir: ./out
+
+<<<
+== Dependencies
+
+- `black`: Formatter für Python
+- `pandas`: Wird zum Konvertieren und bearbeiten von den Datasets benötigt
+- `flask`: Library für Http Webserver, hat auch Peer-Dependencies wie Click oder Jinja2
+
+.requirements.txt
+----
+include::../requirements.txt[]
+----
+
+== Lösungsidee
+Die Library von Exercise 06 wird an diese Übung angepasst, damit in bestimmte File Formate konvertiert werden kann.
+Die Datasets werden in einem Upload-Folder gespeichert und die Filenamen werden auf nicht erlaubte Zeichen geprüft.
+Falls Files konvertiert werden müssen, werden diese im temp Verzeichnis des OSs abgelegt, da diese nur für kurze Zeit gebraucht werden. Dafür wird beim Server start ein Directory angelegt.
+
+== Annahmen
+- Die Files sind in UTF-8 kodiert.
+
+== Test-Cases
+=== Upload von einem Dataset
+Es wird ein neue JSOn Dataset hochgeladen.
+
+.Upload Form
+image::img/upload_dataset.png[]
+
+Das File wird erfolgreich hochgeladen und der Filename wird sanitized(`One Piece json.json` -> `One_Piece_json.json`)
+
+.Uploaded Dataset
+image::img/uploaded_dataset.png[]
+
+=== Details anzeigen
+Es werden alle Details angezeigt.
+
+.Details von `One_Piece_json.json`
+image::img/details_one_piece.png[]
+
+=== Zelle Editieren
+Es wird eine einzelne Zelle editiert.
+
+.Zelle Name in Zeile 0 wird editiert
+image::img/update_cell.png[]
+
+.Updated Details
+image::img/updated_details.png[]
+
+=== Zeile löschen
+Es wird eine Zeile gelöscht.
+
+.Original
+image::img/delete_row.png[]
+
+.Zeile wurde gelöscht
+image::img/deleted_row.png[]
+
+=== Spalte löschen
+Es wird die Spalte `Unnamed: 0` gelöscht.
+
+.Original
+image::img/deleted_row.png[]
+
+.Spalte wurde gelöscht
+image::img/deleted_col.png[]
+
+=== File in andere Formate konvertieren
+Format auswählen und downloaden.
+
+.Download
+image::img/download_csv.png[]
+
+.csv file
+[source,csv]
+----
+include::testfiles/One_Piece_json.csv[lines=1..10]
+----
+
+.sqlite database
+image::img/download_sqlite.png[]
+
+
+=== File löschen
+Das File wird vom Server entfernt.
+
+image::img/delete_file.png[]
+
+
+
