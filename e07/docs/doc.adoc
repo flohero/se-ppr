@@ -1,5 +1,6 @@
 = Exercise 07
-:author: Florian Weingartshofer <S1910307103@fhooe.at>
+:author: Florian Weingartshofer
+:email: <S1910307103@fhooe.at>
 :reproducible:
 :experimental:
 :listing-caption: Listing
@@ -25,6 +26,7 @@
 include::../requirements.txt[]
 ----
 
+<<<
 == Lösungsidee
 Die Library von Exercise 06 wird an diese Übung angepasst, damit in bestimmte File Formate konvertiert werden kann.
 Die Datasets werden in einem Upload-Folder gespeichert und die Filenamen werden auf nicht erlaubte Zeichen geprüft.
@@ -33,6 +35,7 @@ Falls Files konvertiert werden müssen, werden diese im temp Verzeichnis des OSs
 == Annahmen
 - Die Files sind in UTF-8 kodiert.
 
+<<<
 == Test-Cases
 === Upload von einem Dataset
 Es wird ein neue JSOn Dataset hochgeladen.
@@ -45,12 +48,14 @@ Das File wird erfolgreich hochgeladen und der Filename wird sanitized(`One Piece
 .Uploaded Dataset
 image::img/uploaded_dataset.png[]
 
+<<<
 === Details anzeigen
 Es werden alle Details angezeigt.
 
 .Details von `One_Piece_json.json`
 image::img/details_one_piece.png[]
 
+<<<
 === Zelle Editieren
 Es wird eine einzelne Zelle editiert.
 
@@ -60,6 +65,7 @@ image::img/update_cell.png[]
 .Updated Details
 image::img/updated_details.png[]
 
+<<<
 === Zeile löschen
 Es wird eine Zeile gelöscht.
 
@@ -69,6 +75,7 @@ image::img/delete_row.png[]
 .Zeile wurde gelöscht
 image::img/deleted_row.png[]
 
+<<<
 === Spalte löschen
 Es wird die Spalte `Unnamed: 0` gelöscht.
 
@@ -78,6 +85,7 @@ image::img/deleted_row.png[]
 .Spalte wurde gelöscht
 image::img/deleted_col.png[]
 
+<<<
 === File in andere Formate konvertieren
 Format auswählen und downloaden.
 
@@ -93,7 +101,7 @@ include::testfiles/One_Piece_json.csv[lines=1..10]
 .sqlite database
 image::img/download_sqlite.png[]
 
-
+<<<
 === File löschen
 Das File wird vom Server entfernt.
 

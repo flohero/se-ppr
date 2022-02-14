@@ -1,5 +1,6 @@
 = Exercise 09
-:author: Florian Weingartshofer <S1910307103@fhooe.at>
+:author: Florian Weingartshofer
+:email: <S1910307103@fhooe.at>
 :reproducible:
 :experimental:
 :listing-caption: Listing
@@ -13,6 +14,7 @@
 :img: ./img
 :imagesoutdir: ./out
 
+<<<
 == Dependencies
 Es wurden keine neuen Dependencies hinzugefügt bis auf black zum Formattieren.
 
@@ -32,6 +34,7 @@ Die Metadaten werden dann bei Anzeige der Details-Seite mitgeladen.
 
 Zur Website selber wurde nur eine Seite mit Form zum Starten des Web-scrapings angelegt.
 
+<<<
 == Test-Cases
 === GitHub Profile
 Es wird ein GitHub Profil angegeben und keine Organisation.
@@ -42,6 +45,7 @@ image::img/gh_profile.png[]
 .Error
 image::img/not_valid_gh_org.png[]
 
+<<<
 === Scrape Gh-Organisation
 Es wird folgende Organisation angegeben: https://github.com/catppuccin[]
 
@@ -51,6 +55,7 @@ image::img/gh_org.png[]
 .Ergebnis
 image::img/added_org.png[]
 
+<<<
 === Details von Organisation
 Die Details zu GitHub Organisaton.
 
