@@ -125,15 +125,5 @@ def parse_file(file: pathlib.Path) -> ParsedFile:
     return ParsedFile(file, df)
 
 
-def convert_file(source: str, dest_path: str, dest_type: str) -> str:
-    pf = parse_file(pathlib.Path(source))
-    pf.out_path = dest_path
-    return pathlib.Path(pf.convert_file(dest_type)).name
-
-
 def file_allowed(filename: str) -> bool:
     return pathlib.Path(filename).suffix in allowed_file_types
-
-
-def file_exists(filepath: str) -> bool:
-    return pathlib.Path(filepath).exists()

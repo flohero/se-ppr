@@ -37,7 +37,10 @@ class YetAnotherConverterWindow(Ui_MainWindow):
 
     # Event Handlers
     def _on_add_file(self):
-        print("Added")
+        """
+        Event handler to add a dataset.
+        Opens a file dialog to select the file
+        """
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         file_name, _ = QFileDialog.getOpenFileName(
@@ -60,6 +63,9 @@ class YetAnotherConverterWindow(Ui_MainWindow):
         self._update_file_list()
 
     def _on_delete_entry(self):
+        """
+        Deletes a dataset from the application
+        """
         current = self.file_list.currentRow()
         if current >= 0:
             utils.remove_file(utils.get_all_uploaded_files()[current])
@@ -70,12 +76,20 @@ class YetAnotherConverterWindow(Ui_MainWindow):
             self.export_button.setDisabled(True)
 
     def _update_file_list(self):
+        """
+        Updates the available dataset in the master view
+        """
         files = utils.get_all_uploaded_files()
         self.file_list.clear()
         for file in files:
             self.file_list.addItem(file)
 
     def _select_dataset(self, file_name):
+        """
+        Updates the details view if a new dataset has been selected
+        Removes table change event handler so every new cell does not trigger a changed event
+        :param file_name: name of the dataset
+        """
         self.export_button.setDisabled(False)
         try:
             self.dataset_table.itemChanged.disconnect()
@@ -98,6 +112,9 @@ class YetAnotherConverterWindow(Ui_MainWindow):
         self.dataset_table.itemChanged.connect(self._on_table_change)
 
     def _on_table_change(self, item):
+        """
+        If a cell has been changed updates the dataset, so the change is persistent
+        """
         current = self.file_list.currentRow()
         f = pathlib.Path(
             utils.path_of_uploaded_file(utils.get_all_uploaded_files()[current])
@@ -108,6 +125,9 @@ class YetAnotherConverterWindow(Ui_MainWindow):
         pf.convert_file(pf.file.suffix)
 
     def _remove_row(self):
+        """
+        Event handler that removes a selected row
+        """
         row = self.dataset_table.currentRow()
         if row < 0:
             self._display_error("No row selected")
@@ -116,6 +136,9 @@ class YetAnotherConverterWindow(Ui_MainWindow):
         self._drop_row_or_column(f, row, True)
 
     def _remove_col(self):
+        """
+        Event handler that removes a selected column
+        """
         col = self.dataset_table.currentColumn()
         if col < 0:
             self._display_error("No column selected")
@@ -124,6 +147,9 @@ class YetAnotherConverterWindow(Ui_MainWindow):
         self._drop_row_or_column(f, col, False)
 
     def _export_file(self):
+        """
+        Starts the file export process, first the user has to select a destination directory were the file is saved
+        """
         if self.file_list.currentRow() < 0:
             self._display_error("No File to be exported")
             return
@@ -144,10 +170,21 @@ class YetAnotherConverterWindow(Ui_MainWindow):
     # Helper functions
 
     def _get_current_file(self) -> str:
+        """
+        Maps the selected dataset to the dataset-file
+        :return: a dataset file
+        """
         current = self.file_list.currentRow()
         return utils.path_of_uploaded_file(utils.get_all_uploaded_files()[current])
 
     def _drop_row_or_column(self, target: str, idx, is_row: bool = True):
+        """
+        Utility function to drop a row or column from a dataset and the detailsview,
+        so we do not have to reload the file after changing it
+        :param target: dataset
+        :param idx: which row/column
+        :param is_row: indicates whether we want to drop a row or column
+        """
         pf = parse_file(pathlib.Path(target))
         if is_row:
             pf.df.drop([idx], inplace=True)
